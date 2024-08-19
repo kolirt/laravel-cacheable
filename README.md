@@ -1,4 +1,6 @@
 # Laravel Cacheable 
+Easily cache and control class methods without having to remember cache key names
+
 
 ## Structure
 - [Getting started](#getting-started)
