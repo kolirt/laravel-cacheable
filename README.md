@@ -77,7 +77,7 @@ class Example
 
 ## Methods
 
-### `cache`
+#### `cache`
 Using the `cache` method, cache everything you need
 
 ```php
@@ -100,7 +100,7 @@ class Example
 ```
 
 
-### `clearCache`
+#### `clearCache`
 To clear the cache, use the `clearCache` method
 
 ```php
@@ -123,7 +123,7 @@ class Example
 ```
 
 
-### `updateCache`
+#### `updateCache`
 To update the cache, use the `updateCache` method
 
 ```php
@@ -141,7 +141,7 @@ class Example
 ```
 
 
-### `setCacheTime`
+#### `setCacheTime`
 To set the cache time, use the `setCacheTime` method
 
 ```php
@@ -159,7 +159,7 @@ class Example
 ```
 
 
-### `flushAllCache`
+#### `flushAllCache`
 Clearing the all cache works on tags. You have to switch the class to taggable mode
 
 ```php
@@ -196,7 +196,7 @@ $example->flushAllCache();
 ```
 
 
-### `appendCacheTags`
+#### `appendCacheTags`
 In addition to the basic tag that is added automatically in taggable mode, you can add additional tags that you need using the `appendCacheTags` method
 
 ```php
