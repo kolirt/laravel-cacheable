@@ -37,7 +37,7 @@ Publish config file
 php artisan cacheable:install
 ```
 
-By default, Laravel has a problem with multitags, which leads to excessive duplication of data in the cache and unexpected behavior when clearing and reading the cache. You can read more about it <a href="https://github.com/laravel/framework/issues/25234" target="_blank">here</a>. To fix this issue, add the following code to the `composer.json` and `run composer dump-autoload`
+By default, Laravel has a problem with multitags, which leads to excessive duplication of data in the cache and unexpected behavior when clearing and reading the cache. You can read more about it <a href="https://github.com/laravel/framework/issues/25234" target="_blank">here</a>. To fix this issue, add the following code to the `composer.json` and run `composer dump-autoload`
 
 ```json
 {
