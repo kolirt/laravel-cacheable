@@ -1,6 +1,6 @@
 # Laravel Cacheable 
 
-# Structure
+## Structure
 - [Getting started](#getting-started)
     - [Requirements](#requirements)
     - [Installation](#installation)
@@ -21,22 +21,22 @@
   <img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
 </a>
 
-# Getting started
+## Getting started
 Easily cache and control class methods without having to remember cache key names
 
 
-## Requirements
+### Requirements
 - PHP >= 8.1
 - Laravel >= 10
 
 
-## Installation
+### Installation
 ```bash
 composer require kolirt/laravel-cacheable
 ```
 
 
-## Setup
+### Setup
 Publish config file
 
 ```bash
@@ -70,12 +70,12 @@ class Example
 ```
 
 
-# Console commands
+## Console commands
 - `cacheable:install` - Install cacheable package
 - `cacheable:publish-config` - Publish the config file
 
 
-# Methods
+## Methods
 
 ### `cache`
 Using the `cache` method, cache everything you need
@@ -234,13 +234,13 @@ Cache::tags(['tag1', 'tag2'])->flush();
 ```
 
 
-# FAQ
+## FAQ
 Check closed [issues](https://github.com/kolirt/laravel-cacheable/issues) to get answers for most asked questions
 
 
-# License
+## License
 [MIT](LICENSE.txt)
 
 
-# Other packages
+## Other packages
 Check out my other packages on my [GitHub profile](https://github.com/kolirt)
