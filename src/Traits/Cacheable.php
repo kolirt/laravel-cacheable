@@ -18,7 +18,29 @@ trait Cacheable
 
     public function __construct()
     {
-        $this->setCacheTime(now()->addMinutes(config('cacheable.cache_time')));
+        switch (config('cacheable.cache_time')) {
+            case 'endOfDay':
+                $this->setCacheTime(now()->endOfDay());
+                break;
+            case 'endOfHour':
+                $this->setCacheTime(now()->endOfHour());
+                break;
+            case 'endOfMinute':
+                $this->setCacheTime(now()->endOfMinute());
+                break;
+            case 'endOfMonth':
+                $this->setCacheTime(now()->endOfMonth());
+                break;
+            case 'endOfWeek':
+                $this->setCacheTime(now()->endOfWeek());
+                break;
+            case 'endOfYear':
+                $this->setCacheTime(now()->endOfYear());
+                break;
+            default:
+                $this->setCacheTime(now()->addMinutes(config('cacheable.cache_time')));
+                break;
+        }
     }
 
     public function appendCacheTags(array $tags): self

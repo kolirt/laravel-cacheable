@@ -3,5 +3,13 @@
 return [
     'namespace' => false,
 
-    'cache_time' => 24 * 60, // minutes
+    /*
+    |--------------------------------------------------------------------------
+    | Caching time
+    |--------------------------------------------------------------------------
+    |
+    | Supported values: int in minutes, "endOfDay", "endOfHour", "endOfMinute", "endOfMonth", "endOfWeek", "endOfYear"
+    |
+    */
+    'cache_time' => 24 * 60
 ];
