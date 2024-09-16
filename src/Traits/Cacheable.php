@@ -16,6 +16,8 @@ trait Cacheable
 
     protected Carbon $cache_time;
 
+    protected bool $cache_disabled = false;
+
     public function __construct()
     {
         switch (config('cacheable.cache_time')) {
@@ -49,9 +51,30 @@ trait Cacheable
         return $this;
     }
 
+    public function flushAllCache(): bool
+    {
+        $tags = $this->getCacheTags();
+
+        if (count($tags)) {
+            return Cache::tags($tags)->flush();
+        }
+
+        return false;
+    }
+
     protected function setCacheTime(Carbon $time): void
     {
         $this->cache_time = $time;
+    }
+
+    protected function disableCache(): void
+    {
+        $this->cache_disabled = true;
+    }
+
+    protected function enableCache(): void
+    {
+        $this->cache_disabled = false;
     }
 
     protected function cache(Closure $fnc, ...$args)
@@ -68,7 +91,11 @@ trait Cacheable
             $cache = Cache::getFacadeRoot();
         }
 
-        return $cache->remember($data['key'], $this->cache_time, $fnc);
+        if ($this->cache_disabled) {
+            return $fnc();
+        } else {
+            return $cache->remember($data['key'], $this->cache_time, $fnc);
+        }
     }
 
     protected function updateCache($fnc_name, $cached_data)
@@ -84,6 +111,17 @@ trait Cacheable
         return $cache->set($data['key'], $cached_data, $this->cache_time);
     }
 
+    protected function refreshCache($fnc_name, ...$args)
+    {
+        $this->disableCache();
+
+        $data = $this->{$fnc_name}(...$args);
+
+        $this->enableCache();
+
+        return $this->updateCache($fnc_name, $data);
+    }
+
     protected function clearCache($fnc_name, ...$args): bool
     {
         $data = $this->getCacheKey($fnc_name, ...$args);
@@ -95,17 +133,6 @@ trait Cacheable
         }
 
         return $cache->forget($data['key']);
-    }
-
-    public function flushAllCache(): bool
-    {
-        $tags = $this->getCacheTags();
-
-        if (count($tags)) {
-            return Cache::tags($tags)->flush();
-        }
-
-        return false;
     }
 
     protected function getCacheTags()

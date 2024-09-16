@@ -12,6 +12,7 @@ Easily cache and control class methods without having to remember cache key name
   - [cache](#cache)
   - [clearCache](#clearcache)
   - [updateCache](#updatecache)
+  - [refreshCache](#refreshcache)
   - [setCacheTime](#setcachetime)
   - [flushAllCache](#flushallcache)
   - [appendCacheTags](#appendcachetags)
@@ -138,6 +139,28 @@ class Example
     public function updateExampleMethod() 
     {
         $this->updateCache('exampleMethod', 'new example data');
+    }
+}
+```
+
+
+#### `refreshCache`
+To refresh the cache, use the `refreshCache` method
+
+```php
+use Kolirt\Cacheable\Traits\Cacheable;
+
+class Example
+{
+    use Cacheable;
+
+    public function exampleMethod() {
+        return $this->cache(fn () => 'example data');
+    }
+
+    public function refreshExampleMethod() 
+    {
+        $this->refreshCache('exampleMethod');
     }
 }
 ```
