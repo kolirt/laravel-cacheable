@@ -20,7 +20,7 @@ trait Cacheable
 
     public function __construct()
     {
-        switch (config('cacheable.cache_time')) {
+        switch (config('cacheable.default_cache_time')) {
             case 'endOfDay':
                 $this->setCacheTime(now()->endOfDay());
                 break;
@@ -40,7 +40,7 @@ trait Cacheable
                 $this->setCacheTime(now()->endOfYear());
                 break;
             default:
-                $this->setCacheTime(now()->addMinutes(config('cacheable.cache_time')));
+                $this->setCacheTime(now()->addMinutes(config('cacheable.default_cache_time')));
                 break;
         }
     }
@@ -91,7 +91,7 @@ trait Cacheable
             $cache = Cache::getFacadeRoot();
         }
 
-        if ($this->cache_disabled) {
+        if ($this->cache_disabled || config('cacheable.disable_cache')) {
             return $fnc();
         } else {
             return $cache->remember($data['key'], $this->cache_time, $fnc);

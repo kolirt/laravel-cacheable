@@ -12,7 +12,7 @@
     ],
     "homepage": "https://github.com/kolirt/laravel-cacheable",
     "license": "MIT",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "authors": [
         {
             "name": "kolirt"

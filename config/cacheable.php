@@ -1,7 +1,14 @@
 <?php
 
 return [
-    'namespace' => false,
+    /*
+    |--------------------------------------------------------------------------
+    | Namespace
+    |--------------------------------------------------------------------------
+    |
+    | Add namespace class to key cache
+     */
+    'namespace' => env('CACHEABLE_NAMESPACE', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -11,5 +18,14 @@ return [
     | Supported values: int in minutes, "endOfDay", "endOfHour", "endOfMinute", "endOfMonth", "endOfWeek", "endOfYear"
     |
     */
-    'cache_time' => 24 * 60
+    'default_cache_time' => env('CACHEABLE_DEFAULT_CACHE_TIME', 24 * 60),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Disable caching
+    |--------------------------------------------------------------------------
+    |
+    | Disable caching for all
+     */
+    'disable_cache' => env('CACHEABLE_DISABLE_CACHING', false),
 ];
