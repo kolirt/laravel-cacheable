@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use ReflectionClass;
 
@@ -164,28 +165,9 @@ trait Cacheable
         $tags = $this->getCacheTags();
         $args_prepared = [];
         foreach ($args as $arg) {
-            if ($arg instanceof Pivot) {
-                $args_prepared[] = "{$this->getName($arg)}->{$arg->getAttribute($arg->getForeignKey())}_{$arg->getKey()}";
-            } else if ($arg instanceof Model) {
-                $args_prepared[] = "{$this->getName($arg)}->{$arg->getKey()}";
-            } else if ($arg instanceof \UnitEnum) {
-                $args_prepared[] = "{$this->getName($arg)}->{$arg->name}";
-            } else if ($arg instanceof Carbon) {
-                $args_prepared[] = str_replace(':', '_', $arg->toIso8601String());
-            } else {
-                switch (gettype($arg)) {
-                    case 'boolean':
-                        $args_prepared[] = $arg ? 1 : 0;
-                        break;
-                    case 'integer':
-                    case 'double':
-                    case 'string':
-                        $args_prepared[] = $arg;
-                        break;
-                    case 'NULL':
-                        $args_prepared[] = 'null';
-                        break;
-                }
+            $arg_prepared = $this->prepareArg($arg);
+            if ($arg_prepared !== null) {
+                $args_prepared[] = $arg_prepared;
             }
         }
         $args_prepared = implode(', ', $args_prepared);
@@ -197,6 +179,30 @@ trait Cacheable
             'tags' => $tags,
             'key' => implode(':', $result)
         ];
+    }
+
+    private function prepareArg($arg)
+    {
+        if ($arg instanceof Pivot) {
+            return "{$this->getName($arg)}->{$arg->getAttribute($arg->getForeignKey())}_{$arg->getKey()}";
+        } else if ($arg instanceof Model) {
+            return "{$this->getName($arg)}->{$arg->getKey()}";
+        } else if ($arg instanceof \UnitEnum) {
+            return "{$this->getName($arg)}->{$arg->name}";
+        } else if ($arg instanceof Carbon) {
+            return str_replace(':', '_', $arg->toIso8601String());
+        } else if ($arg instanceof Collection) {
+            return $arg->map(fn($v) => $this->prepareArg($v))->toJson();
+        }
+
+        return match (gettype($arg)) {
+            'boolean' => $arg ? 1 : 0,
+            'integer', 'double', 'string' => $arg,
+            'array' => json_encode(array_map(fn($v) => $this->prepareArg($v), $arg)),
+            'NULL' => 'null',
+            'object' => 'object',
+            default => null
+        };
     }
 
     private function getName($target = null): string
