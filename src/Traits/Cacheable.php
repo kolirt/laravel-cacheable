@@ -198,9 +198,9 @@ trait Cacheable
         return match (gettype($arg)) {
             'boolean' => $arg ? 1 : 0,
             'integer', 'double', 'string' => $arg,
-            'array' => json_encode(array_map(fn($v) => $this->prepareArg($v), $arg)),
+            'array' => hash('sha256', json_encode(array_map(fn($v) => $this->prepareArg($v), $arg))),
             'NULL' => 'null',
-            'object' => 'object',
+            'object' => hash('sha256', json_encode($arg)),
             default => null
         };
     }
