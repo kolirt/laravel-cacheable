@@ -99,9 +99,9 @@ trait Cacheable
         }
     }
 
-    protected function updateCache($fnc_name, $cached_data)
+    protected function updateCache($fnc_name, $cached_data, ...$args)
     {
-        $data = $this->getCacheKey($fnc_name);
+        $data = $this->getCacheKey($fnc_name, ...$args);
 
         if (count($data['tags'])) {
             $cache = Cache::tags($data['tags']);
